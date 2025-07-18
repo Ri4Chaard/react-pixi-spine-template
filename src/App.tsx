@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+import SecondPage from "./pages/SecondPage";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import { useAssetsLoader } from "./hooks/useAssetsLoader";
+import PreloaderPage from "./pages/PreloaderPage";
 
-function App() {
-  const [count, setCount] = useState(0)
+const assets = [
+  "/assets/spine/enemy/Enemy.json",
+  "/assets/spine/enemy/Enemy.atlas",
+  "/assets/sfx/btn_click.mp3",
+];
 
+const App: React.FC = () => {
+  // 1) Загружаем всё пачкой
+  const { loaded, progress } = useAssetsLoader(assets);
+
+  // 2) Пока не загружено — показываем прелоадер
+  if (!loaded) {
+    return <PreloaderPage progress={progress} />;
+  }
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+    <Provider store={store}>
+      <BrowserRouter>
+        <nav style={{ position: "absolute", top: 10, left: 10, zIndex: 10 }}>
+          <Link to="/" style={{ marginRight: 10 }}>
+            Главная
+          </Link>
+          <Link to="/second">Вторая</Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/second" element={<SecondPage />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  );
+};
+export default App;
