@@ -1,12 +1,12 @@
 import * as PIXI from 'pixi.js';
 
 /**
- * Простая абстракция сцены — контейнер PIXI.
+ * Simple scene abstraction - PIXI container.
  */
 export type Scene = PIXI.Container;
 
 /**
- * Опции для конфигурации движка.
+ * Options for engine configuration.
  */
 export interface EngineOptions {
   width?: number;

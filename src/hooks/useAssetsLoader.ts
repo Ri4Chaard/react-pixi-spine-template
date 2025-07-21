@@ -1,4 +1,3 @@
-// src/hooks/useAssetsLoader.ts
 import { useState, useEffect } from 'react';
 import { Assets } from 'pixi.js';
 
@@ -12,23 +11,31 @@ export function useAssetsLoader(urls: string[]): LoaderResult {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // 1. Регистрируем bundle 'assets' с ключами = URL
-    const resources = urls.reduce<Record<string, string>>(
-      (acc, url) => ({ ...acc, [url]: url }),
-      {}
-    );
-    Assets.addBundle('assets', resources);
-
-    // 2. Запускаем загрузку bundle с коллбэком прогресса
-    // callback получает число 0.0–1.0 на каждом продвинутом шаге загрузки
-    Assets.loadBundle('assets', (ratio: number) => {
-      setProgress(Math.round(ratio * 100));
-    }).then(() => {
+    if (!urls.length) {
       setLoaded(true);
-    });
+      return;
+    }
 
-    // Assets кеширует всё сам — сбрасывать не нужно
-  }, [urls]);
+    const bundleName = `assets_${Date.now()}`;
+    Assets.addBundle(bundleName, Object.fromEntries(urls.map(u => [u, u])));
+
+    // loading and counting progress
+    Assets.loadBundle(bundleName, ratio => {
+      setProgress(Math.round(ratio * 100));
+    })
+      .then(() => {
+        setLoaded(true);
+      })
+      .catch(err => {
+        console.error('Loader error:', err);
+      });
+
+    return () => {
+      Assets.unloadBundle(bundleName);
+      setLoaded(false);
+      setProgress(0);
+    };
+  }, [urls.join('|')]);
 
   return { loaded, progress };
 }

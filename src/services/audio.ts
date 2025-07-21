@@ -10,7 +10,7 @@ export class AudioService {
   private static sounds: Record<string, Howl> = {};
 
   /**
-   * Загружает звук под идентификатором id.
+   * Loads the sound under the id.
    */
   static load(id: string, src: string, options?: HowlOptions) {
     if (!AudioService.sounds[id]) {

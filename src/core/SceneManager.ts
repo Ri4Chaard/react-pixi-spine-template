@@ -10,14 +10,14 @@ export class SceneManager {
   }
 
   /**
-   * Регистрирует сцену по имени.
+   * Registers the scene by name.
    */
   public register(name: string, scene: Scene) {
     this.scenes[name] = scene;
   }
 
   /**
-   * Переключается на ранее зарегистрированную сцену.
+   * Switches to a previously registered scene.
    */
   public goTo(name: string) {
     const scene = this.scenes[name];

@@ -1,14 +1,14 @@
-import 'pixi-spine';               // ← регистрирует загрузчик/парсер Spine автоматически :contentReference[oaicite:0]{index=0}
+import 'pixi-spine';
 import * as PIXI from 'pixi.js';
-import { Spine } from 'pixi-spine'; // класс для создания Spine-спрайтов
+import { Spine } from 'pixi-spine';
 
 export class SpineSystem {
   /**
-   * Загружает и создаёт Spine-спрайт.
-   * @param spineJson — URL к вашему .json-файлу Spine (спецификация + атлас).
+   * Loads and creates a Spine sprite.
+   * @param spineJson — URL to your Spine .json file (spec + atlas).
    */
   static async create(spineJson: string): Promise<Spine> {
-    // После `import 'pixi-spine'`, Assets знает, как парсить .json/atlas Spine
+    // After `import ‘pixi-spine’`, Assets knows how to parse .json/atlas Spine
     const resource = await PIXI.Assets.load(spineJson);
     const spine = new Spine(resource.spineData);
     return spine;

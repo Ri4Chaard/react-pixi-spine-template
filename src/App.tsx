@@ -11,14 +11,13 @@ import PreloaderPage from "./pages/PreloaderPage";
 const assets = [
   "/assets/spine/enemy/Enemy.json",
   "/assets/spine/enemy/Enemy.atlas",
-  "/assets/sfx/btn_click.mp3",
 ];
 
 const App: React.FC = () => {
-  // 1) Загружаем всё пачкой
+  // 1) Load everything in a bundle
   const { loaded, progress } = useAssetsLoader(assets);
 
-  // 2) Пока не загружено — показываем прелоадер
+  // 2) Until it's uploaded - show preloader
   if (!loaded) {
     return <PreloaderPage progress={progress} />;
   }
@@ -27,9 +26,9 @@ const App: React.FC = () => {
       <BrowserRouter>
         <nav style={{ position: "absolute", top: 10, left: 10, zIndex: 10 }}>
           <Link to="/" style={{ marginRight: 10 }}>
-            Главная
+            Main
           </Link>
-          <Link to="/second">Вторая</Link>
+          <Link to="/second">Second</Link>
         </nav>
         <Routes>
           <Route path="/" element={<MainPage />} />

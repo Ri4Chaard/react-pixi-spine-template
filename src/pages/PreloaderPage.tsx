@@ -1,8 +1,7 @@
-// src/pages/PreloaderPage.tsx
 import React from "react";
 
 interface Props {
-  progress: number; // из useAssetsLoader
+  progress: number;
 }
 
 const PreloaderPage: React.FC<Props> = ({ progress }) => (
@@ -15,7 +14,7 @@ const PreloaderPage: React.FC<Props> = ({ progress }) => (
       height: "100vh",
     }}
   >
-    <h2>Загрузка: {progress}%</h2>
+    <h2>Loading: {progress}%</h2>
     <div
       style={{
         width: 300,

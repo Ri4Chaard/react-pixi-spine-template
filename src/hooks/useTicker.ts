@@ -1,11 +1,10 @@
-// src/hooks/useTicker.ts
 import { useEffect } from 'react';
 import { Ticker } from 'pixi.js';
 
 /**
- * Подписывается на общий PIXI.Ticker.shared.
- * @param callback — вызывается каждый кадр с параметром delta (кол-во прошедших кадров, как number)
- * @param deps — зависимости для пересоздания подписки
+ * Subscribes to PIXI.Ticker.shared.
+ * @param callback — called every frame with delta parameter (number of frames passed, as number)
+ * @param deps — dependencies to recreate subscription
  */
 export function useTicker(
   callback: (delta: number) => void,

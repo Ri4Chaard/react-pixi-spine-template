@@ -9,9 +9,9 @@ interface SoundControls {
 }
 
 /**
- * Хук для управления звуком через Howler.
- * @param src     Путь к аудио-файлу
- * @param options Опции Howl
+ * Hook to control audio via Howler.
+ * @param src     Path to audio file
+ * @param options Howl options
  */
 export function useSound(src: string, options?: HowlOptions): SoundControls {
   const soundRef = useRef<Howl>(null);
