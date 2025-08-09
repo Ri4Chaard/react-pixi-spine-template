@@ -2,18 +2,14 @@ import React, { useEffect, useRef } from "react";
 import * as PIXI from "pixi.js";
 import { useDispatch, useSelector } from "react-redux";
 import { hitRequested } from "../features/enemy/slice";
-import { useEngine } from "../hooks/useEngine";
-import { useTicker } from "../hooks/useTicker";
 import { SpineSystem } from "../systems/SpineSystem";
 import type { RootState } from "../store";
 import type { Spine } from "pixi-spine";
+import { useEngineContext } from "../context/EngineProvider";
 
 const MainPage: React.FC = () => {
-  const { containerRef, engine } = useEngine({
-    width: 800,
-    height: 600,
-    fps: 30,
-  });
+  const { registerHost, engine } = useEngineContext();
+
   const sceneRef = useRef<PIXI.Container>(null);
   const enemyRef = useRef<Spine>(null);
   const dispatch = useDispatch();
@@ -29,12 +25,12 @@ const MainPage: React.FC = () => {
     SpineSystem.create("/assets/spine/enemy/Enemy.json").then((enemy) => {
       enemyRef.current = enemy;
       enemy.state.setAnimation(0, "Idle", true);
-      enemy.scale.set(0.5)
+      enemy.scale.set(0.5);
       enemy.interactive = true;
       //   enemy.buttonMode = true;
-      enemy.state.data.setMix("Idle", "OnHit", 0.2)
-      enemy.state.data.setMix("OnHit", "Idle", 0.2)
-      
+      enemy.state.data.setMix("Idle", "OnHit", 0.2);
+      enemy.state.data.setMix("OnHit", "Idle", 0.2);
+
       enemy.on("pointerdown", () => {
         // hit request - saga will play the sound and then hitSuccess
         dispatch(hitRequested());
@@ -49,8 +45,11 @@ const MainPage: React.FC = () => {
       );
       scene.addChild(enemy);
     });
-  }, [engine, dispatch]);
 
+    return () => {
+      scene.destroy({ children: true });
+    };
+  }, [engine, dispatch]);
 
   // You can add ticker, if you want
   // useTicker(delta => {
@@ -69,7 +68,7 @@ const MainPage: React.FC = () => {
         margin: "0 auto",
       }}
     >
-      <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
+      <div ref={registerHost} style={{ width: "100%", height: "100%" }} />
       <div
         style={{
           position: "absolute",
@@ -77,7 +76,7 @@ const MainPage: React.FC = () => {
           left: 10,
           color: "white",
           fontSize: "24px",
-          fontWeight:'bold',
+          fontWeight: "bold",
         }}
       >
         Enemy hits count: {hits}

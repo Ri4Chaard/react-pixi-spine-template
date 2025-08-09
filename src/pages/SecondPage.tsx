@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import * as PIXI from 'pixi.js';
-import { useEngine } from '../hooks/useEngine';
+import React, { useEffect, useRef } from "react";
+import * as PIXI from "pixi.js";
+import { useEngineContext } from "../context/EngineProvider";
 
 const SecondPage: React.FC = () => {
-  const { containerRef, engine } = useEngine({ width: 800, height: 600, fps: 60 });
+  const { registerHost, engine } = useEngineContext();
   const circleRef = useRef<PIXI.Graphics>(null);
 
   useEffect(() => {
@@ -19,11 +19,22 @@ const SecondPage: React.FC = () => {
     circle.y = engine.app.renderer.height / 2;
     scene.addChild(circle);
     circleRef.current = circle;
+
+    return () => {
+      scene.destroy({ children: true });
+    };
   }, [engine]);
 
   return (
-    <div style={{ position: 'relative', width: 800, height: 600, margin: '0 auto' }}>
-      <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+    <div
+      style={{
+        position: "relative",
+        width: 800,
+        height: 600,
+        margin: "0 auto",
+      }}
+    >
+      <div ref={registerHost} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };

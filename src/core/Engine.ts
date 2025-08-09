@@ -1,29 +1,18 @@
 import * as PIXI from "pixi.js";
 import "pixi-spine";
-
-export interface EngineOptions {
-  width?: number;
-  height?: number;
-  backgroundAlpha?: number;
-  backgroundColor?: number;
-  fps?: number;
-  antialias?: boolean;
-}
+import type { EngineOptions } from "./types";
 
 export class Engine {
   public app: PIXI.Application;
 
-  constructor(
-    container: HTMLElement,
-    {
-      width = 800,
-      height = 600,
-      backgroundAlpha = 0,
-      backgroundColor = 0x000000,
-      fps = 60,
-      antialias = true,
-    }: EngineOptions = {}
-  ) {
+  constructor({
+    width = 800,
+    height = 600,
+    backgroundAlpha = 0,
+    backgroundColor = 0x000000,
+    fps = 60,
+    antialias = true,
+  }: EngineOptions = {}) {
     this.app = new PIXI.Application({
       width,
       height,
@@ -32,7 +21,6 @@ export class Engine {
       antialias,
     });
 
-    container.appendChild(this.app.view as HTMLCanvasElement);
     this.app.ticker.maxFPS = fps;
   }
 

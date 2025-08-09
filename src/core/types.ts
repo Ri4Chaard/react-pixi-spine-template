@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import * as PIXI from "pixi.js";
 
 /**
  * Simple scene abstraction - PIXI container.
@@ -11,6 +11,7 @@ export type Scene = PIXI.Container;
 export interface EngineOptions {
   width?: number;
   height?: number;
+  backgroundAlpha?: number;
   backgroundColor?: number;
   fps?: number;
   antialias?: boolean;
